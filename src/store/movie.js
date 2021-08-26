@@ -32,7 +32,7 @@ export default {
   },
   // 비동기, async await를 붙이지 않아도 비동기 함수
   actions: {
-    async searchMovies({ commit }, payload) { // c는 state,getters,mutation를 활용 가능 p는 이함수를 사용할때 인수로 들어온 특정 데이터를 가져올수 있음
+    async searchMovies({ state, commit }, payload) { // c는 state,getters,mutation를 활용 가능 p는 이함수를 사용할때 인수로 들어온 특정 데이터를 가져올수 있음
       const { title, type, number, year } = payload
       const OMDB_API_KEY = '7035c60c'
       const res = await axios.get(`https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&s=${title}&type=${type}&y=${year}&page=1`)
@@ -42,6 +42,19 @@ export default {
         message: 'AXIOS',
         loading: true
       })
+      // totalResults : 검색어로 검색된 영화의 갯수
+      const total = parseInt(totalResults, 10) // 문자열로 검색되었기 때문에 10진법, 정수로 바꿔준다.
+      const pageLength = Math.ceil(total / 10) // 검색된 페이지를 10으로 나누고 올림처리 ( ex. 268/10 ->26.8 ->27 페이지 )
+      if (pageLength > 1) { // 페이지가 1페이지를 넘는다면
+        for (let page = 2; page <= pageLength; page += 1) { // 1페이지를 넘었을경우 부터 생기는 것이므로 2부터 시작
+          if (page > number / 10) break
+          const res = await axios.get(`https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&s=${title}&type=${type}&y=${year}&page=${page}`)
+          const { Search } = res.data
+          commit('updateState', {
+            movies: [...state.movies, ...Search]
+          })
+        }
+      }
     }
   }
 }
