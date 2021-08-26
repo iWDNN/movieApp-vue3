@@ -1,5 +1,6 @@
 // 영화 정보를 관리
 import axios from 'axios';
+import _uniqBy from 'lodash/uniqBy'
 
 export default {
   // module, movie.js가 하나의 스토어에서 모듈화 되서 사용이 될 수 있다.
@@ -38,9 +39,7 @@ export default {
       const res = await axios.get(`https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&s=${title}&type=${type}&y=${year}&page=1`)
       const { Search, totalResults } = res.data
       commit('updateState', {
-        movies: Search,
-        message: 'AXIOS',
-        loading: true
+        movies: _uniqBy(Search, 'imdbID')
       })
       // totalResults : 검색어로 검색된 영화의 갯수
       const total = parseInt(totalResults, 10) // 문자열로 검색되었기 때문에 10진법, 정수로 바꿔준다.
@@ -51,7 +50,7 @@ export default {
           const res = await axios.get(`https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&s=${title}&type=${type}&y=${year}&page=${page}`)
           const { Search } = res.data
           commit('updateState', {
-            movies: [...state.movies, ...Search]
+            movies: [...state.movies, _uniqBy(Search, 'imdbID')]
           })
         }
       }
