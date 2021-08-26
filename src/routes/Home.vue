@@ -14,6 +14,7 @@ export default {
     Headline,
     Search,
     MovieList
+    
   }
 }
 </script>
