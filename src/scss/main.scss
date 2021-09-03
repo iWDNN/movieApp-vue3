@@ -1,6 +1,12 @@
 // Default variable overrides
 $primary :#badc58;
-//mint : #1dd1a1;
+$container-max-widths: (
+  sm: 540px,
+  md: 704px,
+  lg: 924px,
+  xl: 1140px,
+  xxl: 1364px
+);
 
 
 // Required
