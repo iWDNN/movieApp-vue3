@@ -83,7 +83,9 @@ export default {
     },
     async searchMovieWithId({ state, commit }, payload) {
       if (state.loading) return
+
       commit('updateState', {
+        theMovie: {},
         loading: true
       })
       try {
@@ -92,7 +94,13 @@ export default {
           theMovie: res.data
         })
       } catch (error) {
-
+        commit('updateState', {
+          theMovie: {}
+        })
+      } finally {
+        commit('updateState', {
+          loading: false
+        })
       }
     }
   }
