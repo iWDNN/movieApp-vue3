@@ -4,6 +4,9 @@
       :class="{'no-result' : !movies.length}"
       class="inner">
       <div
+        v-if="loading"
+        class="spinner-border text-primary"></div>
+      <div
         v-if="message"
         class="message">
         {{ message }}
@@ -32,6 +35,9 @@ export default {
     },
     message(){
       return this.$store.state.movie.message
+    },
+    loading(){
+      return this.$store.state.movie.loading
     }
   }
 }

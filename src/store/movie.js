@@ -10,7 +10,8 @@ export default {
   state: () => ({
     movies: [],
     message: 'Search for the movie title!',
-    loading: false
+    loading: false,
+    theMovie: {}
   }),
 
   // computed, state 데이터의 계산된 데이터 (=computed)
@@ -34,8 +35,11 @@ export default {
   // 비동기, async await를 붙이지 않아도 비동기 함수
   actions: {
     async searchMovies({ state, commit }, payload) { // c는 state,getters,mutation를 활용 가능 p는 이함수를 사용할때 인수로 들어온 특정 데이터를 가져올수 있음
-      commit('updateState', {
-        message: ''
+      if (state.loading) return // 중복검색 방지
+
+      commit('updateState', { // 검색시작
+        message: '',
+        loading: true
       })
       try {
         const res = await _fetchMovie({
@@ -71,17 +75,36 @@ export default {
           movies: [],
           message
         })
+      } finally {
+        commit('updateState', {
+          loading: false
+        })
       }
+    },
+    async searchMovieWithId({ state, commit }, payload) {
+      if (state.loading) return
+      commit('updateState', {
+        loading: true
+      })
+      try {
+        const res = await _fetchMovie(payload)
+        commit('updateState', {
+          theMovie: res.data
+        })
+      } catch (error) {
 
+      }
     }
   }
 }
 
 
 function _fetchMovie(payload) {
-  const { title, type, year, page } = payload
+  const { title, type, year, page, id } = payload
   const OMDB_API_KEY = '7035c60c'
-  const url = `https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&s=${title}&type=${type}&y=${year}&page=${page}`
+  const url = id
+    ? `https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&i=${id}`
+    : `https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&s=${title}&type=${type}&y=${year}&page=${page}`
 
   return new Promise((resolve, reject) => {
     axios.get(url)

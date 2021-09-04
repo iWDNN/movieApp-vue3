@@ -1,6 +1,12 @@
 <template>
   <h1>Movie!</h1>
-  <div class="btn btn-primary">
-    Movie
-  </div>
 </template>
+<script>
+export default {
+  cretaed(){
+    this.$store.dispatch('movie/searchMovieWithId',{
+      id:this.$route.params.id
+    })
+  }
+}
+</script>
