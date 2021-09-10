@@ -2,6 +2,8 @@
 import axios from 'axios';
 import _uniqBy from 'lodash/uniqBy'
 
+const _defaultMessage = 'Search for the movie title!'
+
 export default {
   // module, movie.js가 하나의 스토어에서 모듈화 되서 사용이 될 수 있다.
   namespaced: true,
@@ -9,7 +11,7 @@ export default {
   // data, 취급해야 하는 각각의 data
   state: () => ({
     movies: [],
-    message: 'Search for the movie title!',
+    message: _defaultMessage,
     loading: false,
     theMovie: {}
   }),
@@ -30,6 +32,8 @@ export default {
     },
     resetMovies(state) {
       state.movies = []
+      state.message = _defaultMessage
+      state.loading = false
     }
   },
   // 비동기, async await를 붙이지 않아도 비동기 함수

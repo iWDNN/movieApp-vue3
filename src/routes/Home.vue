@@ -13,8 +13,10 @@ export default {
   components:{
     Headline,
     Search,
-    MovieList
-    
+    MovieList 
+  },
+  created(){
+    this.$store.commit('movie/resetMovies')
   }
 }
 </script>
