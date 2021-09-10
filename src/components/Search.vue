@@ -103,5 +103,22 @@ export default {
       flex-shrink: 0;
       //flex 비율중 감소하지 않게 만드는 속성
     }
+    @include media-breakpoint-down(lg){
+      display:block;
+      input{
+        margin-right:0;
+        margin-bottom:10px;
+      }
+      .selects{
+        margin-right:0;
+        margin-bottom:10px;
+        select{
+          width:100%;
+        }
+      }
+      .btn{
+        width:100%;
+      }
+    }
   }
 </style>

@@ -1,31 +1,61 @@
 <template>
-  <div 
-    :style="{ backgroundImage: `url(${movie.Poster})`}"
-    class="movie">
-    <div class="info">
-      <div class="year">
-        {{ movie.Year }}
-      </div>
-      <div class="title">
-        {{ movie.Title }}
+  <Router-link :to="`/movie/${movie.imdbID}`">
+    <div 
+      :style="{ backgroundImage: `url(${movie.Poster})`}"
+      class="movie">
+      <Loader
+        v-if="imageLoading"
+        :size="1.5"
+        absolute />
+      <div
+        v-else
+        class="info">
+        <div class="year">
+          {{ movie.Year }}
+        </div>
+        <div class="title">
+          {{ movie.Title }}
+        </div>
       </div>
     </div>
-  </div>
+  </Router-link>
 </template>
 
 <script>
+import Loader from '~/components/Loader'
 export default {
+  components:{
+    Loader
+  },
   props:{
     movie:{
       type:Object,
       default:()=>({}) // default : function () { return {} }
+    }
+  },
+  data(){
+    return{
+      imageLoading: true
+    }
+  },
+  mounted(){
+    this.init()
+  },
+  methods:{
+    async init(){
+      const poster = this.movie.Poster
+      if(!poster || poster === 'N/A'){
+        this.imageLoading=false
+      }else{
+      await this.$loadImage(poster)
+      this.imageLoading = false
+      }
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import '~/scss/main';
 .movie{
   $width:200px;
   width:$width;
