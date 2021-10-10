@@ -4,7 +4,7 @@ exports.handler = async function (event, context) {
     body: JSON.stringify({
       name: 'chans',
       age: 26,
-      email: 'cksgh@github.com'
+      email: 'chansi2064@gmail.com'
     })
   }
 }
