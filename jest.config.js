@@ -8,12 +8,13 @@ module.exports = {
   },
   modulePathIgnorePatterns: [ // 검사 무시할 파일들
     '<rootDir>/node_modules',
-    '<rootDir>/dist'
+    '<rootDir>/dist',
+    '<rootDir>/cypress'
   ],
   // jsdom 환경에 대한 URL을 지정합니다
   testURL: 'http://localhost',
   transform: {
     '^.+\\.vue$': 'vue-jest',
     '^.+\\.js$': 'babel-jest'
-  }
+  },
 }

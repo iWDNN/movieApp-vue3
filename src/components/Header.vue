@@ -54,6 +54,7 @@ export default {
   methods:{
     isMatch(path){
       if(!path) return false
+      // console.log(this.$route)
       return path.test(this.$route.fullPath)
     },
     toAbout(){
